@@ -43,6 +43,12 @@ jobs:
             experimental: false
 
     steps:
+      - name: Install apt dependencies
+        run: |
+          sudo apt update
+          sudo apt install ninja-build python3-pip -y
+          pip3 install meson
+
       - run: git clone https://gitlab.freedesktop.org/pixman/pixman.git .
       - run: meson setup build --buildtype=plain -Ddefault_library=static --libdir=lib -Dtests=disabled -Ddemos=disabled -Dlibpng=disabled
       - run: meson compile -C build
