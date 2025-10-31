@@ -50,7 +50,8 @@ jobs:
           pip3 install meson
 
       - run: git clone https://gitlab.freedesktop.org/pixman/pixman.git .
-      - run: meson setup build --buildtype=plain -Ddefault_library=static --libdir=lib -Dtests=disabled -Ddemos=disabled -Dlibpng=disabled
+      - run: mkdir build-${{ matrix.arch }}
+      - run: meson setup build --prefix=${{ github.workspace }}/build-${{ matrix.arch }} --buildtype=plain -Ddefault_library=static --libdir=lib -Dtests=disabled -Ddemos=disabled -Dlibpng=disabled
       - run: meson compile -C build
       - run: meson install -C build
 
@@ -58,4 +59,4 @@ jobs:
         if: always()
         with:
           name: meson-log.txt
-          path: build/meson-logs/meson-log.txt
+          path: build-${{ matrix.arch }}/meson-logs/meson-log.txt
